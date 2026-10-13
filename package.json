@@ -1,0 +1,13 @@
+﻿{
+  "name": "lumiere-restaurant",
+  "version": "1.0.0",
+  "description": "Lumiere - Fine Dining Restaurant Website",
+  "scripts": {
+    "start": "npx http-server . --port 3000 -o",
+    "dev": "npx http-server . --port 3000 -o",
+    "deploy": "vercel --prod"
+  },
+  "keywords": ["restaurant", "fine-dining", "minimal", "lumiere"],
+  "author": "Lumiere Restaurant",
+  "license": "MIT"
+}

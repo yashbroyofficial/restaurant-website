@@ -1,0 +1,440 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Lumiere - Fine Dining Restaurant</title>
+  <meta name="description" content="Lumiere is a fine dining restaurant offering seasonal, farm-to-table cuisine in an elegant minimal atmosphere. Reserve your table today." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <nav class="navbar" id="navbar">
+    <div class="nav-container">
+      <a href="#" class="nav-logo" onclick="showPage('home'); return false;">Lumiere</a>
+      <button class="nav-hamburger" id="hamburger-btn" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
+      <ul class="nav-menu" id="nav-menu">
+        <li><a href="#" class="nav-link active" data-page="home" onclick="showPage('home'); return false;">Home</a></li>
+        <li><a href="#" class="nav-link" data-page="menu" onclick="showPage('menu'); return false;">Menu</a></li>
+        <li><a href="#" class="nav-link" data-page="about" onclick="showPage('about'); return false;">About</a></li>
+        <li><a href="#" class="nav-link" data-page="reservations" onclick="showPage('reservations'); return false;">Reservations</a></li>
+        <li><a href="#" class="nav-link" data-page="gallery" onclick="showPage('gallery'); return false;">Gallery</a></li>
+        <li><a href="#" class="nav-link" data-page="contact" onclick="showPage('contact'); return false;">Contact</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- HOME PAGE -->
+  <main id="page-home" class="page active">
+    <section class="hero" id="hero">
+      <div class="hero-image-wrap">
+        <img src="restaurant_hero.jpg" alt="Lumiere restaurant interior" class="hero-img" />
+        <div class="hero-overlay"></div>
+      </div>
+      <div class="hero-content">
+        <span class="hero-tag">Est. 2018 - Paris-Inspired</span>
+        <h1 class="hero-title">Where Every Meal<br/>Becomes a Memory</h1>
+        <p class="hero-subtitle">Seasonal ingredients. Thoughtful craft. Unhurried moments.</p>
+        <div class="hero-cta">
+          <button class="btn btn-primary" onclick="showPage('reservations')">Reserve a Table</button>
+          <button class="btn btn-outline" onclick="showPage('menu')">View Our Menu</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="intro-strip">
+      <div class="strip-item"><span class="strip-num">01</span><p>Farm-to-Table</p></div>
+      <div class="strip-divider"></div>
+      <div class="strip-item"><span class="strip-num">02</span><p>Seasonal Menu</p></div>
+      <div class="strip-divider"></div>
+      <div class="strip-item"><span class="strip-num">03</span><p>Curated Wines</p></div>
+      <div class="strip-divider"></div>
+      <div class="strip-item"><span class="strip-num">04</span><p>Private Dining</p></div>
+    </section>
+
+    <section class="feature-section">
+      <div class="container feature-grid">
+        <div class="feature-text">
+          <span class="section-tag">Our Philosophy</span>
+          <h2 class="section-title">Simplicity<br/>at its Finest</h2>
+          <p class="section-body">At Lumiere, we believe the best food speaks quietly - through the quality of a single ingredient, the balance of a perfectly composed plate, and the care poured into every detail. Our kitchen follows the rhythm of the seasons, letting nature guide what arrives at your table.</p>
+          <button class="btn btn-secondary" onclick="showPage('about')">Our Story</button>
+        </div>
+        <div class="feature-image-col">
+          <div class="feature-img-stack">
+            <img src="dish_1.jpg" alt="Signature pasta dish" class="feature-img feature-img-main" />
+            <div class="feature-badge">
+              <span class="badge-num">8+</span>
+              <span class="badge-text">Years of Excellence</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="menu-preview-section">
+      <div class="container">
+        <div class="section-header">
+          <span class="section-tag">Seasonal Highlights</span>
+          <h2 class="section-title">Today's Favourites</h2>
+        </div>
+        <div class="menu-preview-grid">
+          <div class="menu-card">
+            <div class="menu-card-img-wrap"><img src="dish_1.jpg" alt="Truffle Tagliolini" class="menu-card-img" /></div>
+            <div class="menu-card-body">
+              <div class="menu-card-top"><h3>Truffle Tagliolini</h3><span class="menu-price">$32</span></div>
+              <p>Hand-rolled pasta, black truffle, aged parmesan, fine herbs</p>
+              <span class="menu-tag">Pasta</span>
+            </div>
+          </div>
+          <div class="menu-card">
+            <div class="menu-card-img-wrap"><img src="dish_2.jpg" alt="Pan-Seared Salmon" class="menu-card-img" /></div>
+            <div class="menu-card-body">
+              <div class="menu-card-top"><h3>Pan-Seared Salmon</h3><span class="menu-price">$38</span></div>
+              <p>Atlantic salmon, seasonal greens, lemon beurre blanc, microherbs</p>
+              <span class="menu-tag">Seafood</span>
+            </div>
+          </div>
+          <div class="menu-card">
+            <div class="menu-card-img-wrap"><img src="dish_3.jpg" alt="Chocolate Fondant" class="menu-card-img" /></div>
+            <div class="menu-card-body">
+              <div class="menu-card-top"><h3>Chocolate Fondant</h3><span class="menu-price">$18</span></div>
+              <p>Warm dark chocolate, vanilla bean ice cream, raspberry coulis</p>
+              <span class="menu-tag">Dessert</span>
+            </div>
+          </div>
+        </div>
+        <div class="text-center mt-lg">
+          <button class="btn btn-primary" onclick="showPage('menu')">Full Menu</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="testimonials-section">
+      <div class="container">
+        <div class="section-header">
+          <span class="section-tag">What Guests Say</span>
+          <h2 class="section-title">Moments Remembered</h2>
+        </div>
+        <div class="testimonials-grid">
+          <div class="testimonial-card">
+            <div class="quote-mark">"</div>
+            <p>"A truly exceptional evening. Every dish was a work of art - minimal, precise, and deeply satisfying."</p>
+            <div class="testimonial-author">
+              <div class="author-avatar">EL</div>
+              <div><strong>Eleanor Liu</strong><span>Food Critic, The Palette</span></div>
+            </div>
+          </div>
+          <div class="testimonial-card">
+            <div class="quote-mark">"</div>
+            <p>"We celebrated our anniversary here and it could not have been more perfect. The seasonal menu is extraordinary."</p>
+            <div class="testimonial-author">
+              <div class="author-avatar">JM</div>
+              <div><strong>James & Marie</strong><span>Loyal Guests</span></div>
+            </div>
+          </div>
+          <div class="testimonial-card">
+            <div class="quote-mark">"</div>
+            <p>"Lumiere understands restraint. The flavours are clean, confident and respectful. Exactly the kind of cooking I crave."</p>
+            <div class="testimonial-author">
+              <div class="author-avatar">AS</div>
+              <div><strong>Arjun Sharma</strong><span>Culinary Enthusiast</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="cta-banner">
+      <div class="container cta-inner">
+        <div><h2>Ready for an Unforgettable Evening?</h2><p>Tables fill quickly - book ahead to secure your experience.</p></div>
+        <button class="btn btn-primary" onclick="showPage('reservations')">Make a Reservation</button>
+      </div>
+    </section>
+  </main>
+
+  <!-- MENU PAGE -->
+  <main id="page-menu" class="page">
+    <div class="page-hero-simple">
+      <span class="section-tag">Our Kitchen</span>
+      <h1>The Menu</h1>
+      <p>Seasonal, curated, and crafted with intention.</p>
+    </div>
+    <div class="container">
+      <div class="menu-tabs" id="menu-tabs">
+        <button class="menu-tab active" data-category="starters" onclick="filterMenu('starters')">Starters</button>
+        <button class="menu-tab" data-category="mains" onclick="filterMenu('mains')">Mains</button>
+        <button class="menu-tab" data-category="pasta" onclick="filterMenu('pasta')">Pasta &amp; Risotto</button>
+        <button class="menu-tab" data-category="desserts" onclick="filterMenu('desserts')">Desserts</button>
+        <button class="menu-tab" data-category="drinks" onclick="filterMenu('drinks')">Drinks</button>
+      </div>
+      <div class="menu-category active" id="cat-starters">
+        <div class="full-menu-grid">
+          <div class="full-menu-item"><div class="fmi-left"><h3>Burrata &amp; Heritage Tomatoes</h3><p>Fresh burrata, heirloom tomatoes, aged balsamic, basil oil, fleur de sel</p><span class="menu-tag">Vegetarian</span></div><span class="fmi-price">$19</span></div>
+          <div class="full-menu-item"><div class="fmi-left"><h3>Seared Scallops</h3><p>Pan-seared king scallops, pea puree, crispy pancetta, micro greens</p><span class="menu-tag">Seafood</span></div><span class="fmi-price">$26</span></div>
+          <div class="full-menu-item"><div class="fmi-left"><h3>French Onion Soup</h3><p>Slow-caramelised onions, rich veal broth, Gruyere crouton</p><span class="menu-tag">Classic</span></div><span class="fmi-price">$16</span></div>
+          <div class="full-menu-item"><div class="fmi-left"><h3>Tuna Tartare</h3><p>Line-caught tuna, avocado cream, sesame, yuzu dressing, wonton crisp</p><span class="menu-tag">Raw</span></div><span class="fmi-price">$24</span></div>
+          <div class="full-menu-item"><div class="fmi-left"><h3>Wild Mushroom Veloute</h3><p>Seasonal wild mushrooms, truffle cream, chive oil, sourdough crisp</p><span class="menu-tag">Vegetarian</span></div><span class="fmi-price">$18</span></div>
+        </div>
+      </div>
+      <div class="menu-category" id="cat-mains">
+        <div class="full-menu-grid">
+          <div class="full-menu-item"><div class="fmi-left"><h3>Pan-Seared Atlantic Salmon</h3><p>Atlantic salmon, asparagus, snap peas, shiitake, lemon beurre blanc</p><span class="menu-tag">Seafood</span></div><span class="fmi-price">$38</span></div>
+          <div class="full-menu-item"><div class="fmi-left"><h3>Roasted Duck Breast</h3><p>Magret duck, cherry jus, hazelnut, roasted asparagus, potato fondant</p><span class="menu-tag">Poultry</span></div><span class="fmi-price">$44</span></div>
+          <div class="full-menu-item"><div class="fmi-left"><h3>Filet Mignon</h3><p>Grass-fed tenderloin, red wine jus, bone marrow butter, seasonal greens</p><span class="menu-tag">Beef</span></div><span class="fmi-price">$58</span></div>
+          <div class="full-menu-item"><div class="fmi-left"><h3>Garden Vegetable Tian</h3><p>Layered seasonal vegetables, goat cheese, herb pistou, toasted pine nuts</p><span class="menu-tag">Vegan</span></div><span class="fmi-price">$32</span></div>
+          <div class="full-menu-item"><div class="fmi-left"><h3>Whole Roasted Sea Bass</h3><p>Whole sea bass, fennel, capers, preserved lemon, olive oil</p><span class="menu-tag">Seafood</span></div><span class="fmi-price">$46</span></div>
+        </div>
+      </div>
+      <div class="menu-category" id="cat-pasta">
+        <div class="full-menu-grid">
+          <div class="full-menu-item"><div class="fmi-left"><h3>Truffle Tagliolini</h3><p>Hand-rolled tagliolini, black truffle, aged parmesan, fine herbs</p><span class="menu-tag">Signature</span></div><span class="fmi-price">$32</span></div>
+          <div class="full-menu-item"><div class="fmi-left"><h3>Lobster Linguine</h3><p>Fresh linguine, half lobster, cherry tomato, saffron, white wine</p><span class="menu-tag">Seafood</span></div><span class="fmi-price">$42</span></div>
+          <div class="full-menu-item"><div class="fmi-left"><h3>Wild Mushroom Risotto</h3><p>Carnaroli rice, porcini, seasonal mushrooms, truffle oil, grana padano</p><span class="menu-tag">Vegetarian</span></div><span class="fmi-price">$28</span></div>
+          <div class="full-menu-item"><div class="fmi-left"><h3>Cacio e Pepe</h3><p>Tonnarelli pasta, aged Pecorino Romano, Parmigiano Reggiano, black pepper</p><span class="menu-tag">Classic</span></div><span class="fmi-price">$24</span></div>
+        </div>
+      </div>
+      <div class="menu-category" id="cat-desserts">
+        <div class="full-menu-grid">
+          <div class="full-menu-item"><div class="fmi-left"><h3>Chocolate Fondant</h3><p>Warm dark chocolate, vanilla bean ice cream, raspberry coulis</p><span class="menu-tag">Signature</span></div><span class="fmi-price">$18</span></div>
+          <div class="full-menu-item"><div class="fmi-left"><h3>Creme Brulee</h3><p>Classic vanilla custard, caramelised sugar, seasonal berries</p><span class="menu-tag">Classic</span></div><span class="fmi-price">$16</span></div>
+          <div class="full-menu-item"><div class="fmi-left"><h3>Lemon Tart</h3><p>Crisp pastry, silky lemon curd, Italian meringue, candied zest</p><span class="menu-tag">Citrus</span></div><span class="fmi-price">$15</span></div>
+          <div class="full-menu-item"><div class="fmi-left"><h3>Cheese Selection</h3><p>Three artisan cheeses, house crackers, quince paste, toasted nuts</p><span class="menu-tag">Sharing</span></div><span class="fmi-price">$22</span></div>
+        </div>
+      </div>
+      <div class="menu-category" id="cat-drinks">
+        <div class="drinks-cols">
+          <div>
+            <h3 class="drinks-subhead">Wines by Glass</h3>
+            <div class="full-menu-grid">
+              <div class="full-menu-item"><div class="fmi-left"><h3>Chablis Premier Cru</h3><p>Domaine Laroche, Burgundy, France - Crisp, mineral</p></div><span class="fmi-price">$18</span></div>
+              <div class="full-menu-item"><div class="fmi-left"><h3>Pinot Noir, Oregon</h3><p>Willamette Valley - Silky, red fruit, earthy</p></div><span class="fmi-price">$17</span></div>
+              <div class="full-menu-item"><div class="fmi-left"><h3>Champagne NV</h3><p>Billecart-Salmon - Elegant, toasty, fine bubbles</p></div><span class="fmi-price">$22</span></div>
+            </div>
+          </div>
+          <div>
+            <h3 class="drinks-subhead">Non-Alcoholic</h3>
+            <div class="full-menu-grid">
+              <div class="full-menu-item"><div class="fmi-left"><h3>House Lemonade</h3><p>Meyer lemon, lavender, sparkling water</p></div><span class="fmi-price">$8</span></div>
+              <div class="full-menu-item"><div class="fmi-left"><h3>Cold-Brew Coffee</h3><p>Single origin, 12-hour cold steep</p></div><span class="fmi-price">$7</span></div>
+              <div class="full-menu-item"><div class="fmi-left"><h3>Herbal Elixir</h3><p>House-made shrub, seasonal botanicals, soda</p></div><span class="fmi-price">$9</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="menu-note"><p>All prices include VAT. Please inform your server of any allergies or dietary requirements. Menu changes with the seasons.</p></div>
+    </div>
+  </main>
+
+  <!-- ABOUT PAGE -->
+  <main id="page-about" class="page">
+    <div class="page-hero-simple">
+      <span class="section-tag">Our Story</span>
+      <h1>About Lumiere</h1>
+      <p>A place built on passion, patience, and the pursuit of the perfect meal.</p>
+    </div>
+    <div class="container">
+      <div class="about-grid">
+        <div class="about-img-col">
+          <img src="chef.jpg" alt="Head Chef Sarah Jenkins" class="about-chef-img" />
+        </div>
+        <div class="about-text-col">
+          <span class="section-tag">The Chef</span>
+          <h2>Sarah Jenkins</h2>
+          <p class="about-subtitle">Head Chef &amp; Founder</p>
+          <p>Sarah trained in Lyon before spending six years in Paris at a Michelin-starred bistro. When she returned home, she brought with her an unwavering respect for ingredients and a conviction that fine dining should feel warm, not stiff.</p>
+          <p>She opened Lumiere in 2018 with a simple mission: to create a restaurant where every guest feels genuinely cared for, and every plate is a quiet expression of joy.</p>
+          <div class="about-stats">
+            <div class="stat-item"><span class="stat-num">8</span><span>Years Open</span></div>
+            <div class="stat-item"><span class="stat-num">3</span><span>Awards Won</span></div>
+            <div class="stat-item"><span class="stat-num">40+</span><span>Local Farmers</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="about-story">
+        <div class="story-block"><span class="story-num">01</span><div><h3>Local Sourcing</h3><p>Every ingredient is sourced within 150 miles of our kitchen. We work with over 40 local farms and producers who share our values of sustainability and quality.</p></div></div>
+        <div class="story-block"><span class="story-num">02</span><div><h3>Seasonal Menus</h3><p>Our menu changes with the seasons - not as a gimmick, but because nature's produce at its peak needs very little to be extraordinary. We follow its lead.</p></div></div>
+        <div class="story-block"><span class="story-num">03</span><div><h3>Minimal Intervention</h3><p>We believe in letting ingredients speak. Techniques exist to enhance, not dominate. This philosophy of restraint defines every dish that leaves our kitchen.</p></div></div>
+        <div class="story-block"><span class="story-num">04</span><div><h3>Warm Hospitality</h3><p>Fine dining should feel warm, not formal. We train every team member to be genuinely present, attentive, and kind - because that is great hospitality.</p></div></div>
+      </div>
+    </div>
+    <div class="awards-strip">
+      <div class="container awards-inner">
+        <span class="awards-label">As Featured In</span>
+        <div class="awards-list">
+          <span>The Times</span><span>.</span><span>Bon Appetit</span><span>.</span><span>Eater</span><span>.</span><span>The Guardian</span><span>.</span><span>Conde Nast Traveller</span>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- RESERVATIONS PAGE -->
+  <main id="page-reservations" class="page">
+    <div class="page-hero-simple">
+      <span class="section-tag">Book Your Table</span>
+      <h1>Reservations</h1>
+      <p>We would love to have you. Choose your preferred date and we will take care of the rest.</p>
+    </div>
+    <div class="container res-container">
+      <div class="res-form-col">
+        <form class="res-form" id="reservation-form" onsubmit="submitReservation(event)">
+          <div class="form-row">
+            <div class="form-group"><label for="res-first">First Name</label><input type="text" id="res-first" placeholder="Sarah" required /></div>
+            <div class="form-group"><label for="res-last">Last Name</label><input type="text" id="res-last" placeholder="Jenkins" required /></div>
+          </div>
+          <div class="form-group"><label for="res-email">Email Address</label><input type="email" id="res-email" placeholder="sarah@example.com" required /></div>
+          <div class="form-group"><label for="res-phone">Phone Number</label><input type="tel" id="res-phone" placeholder="+1 (555) 000-0000" /></div>
+          <div class="form-row">
+            <div class="form-group"><label for="res-date">Date</label><input type="date" id="res-date" required /></div>
+            <div class="form-group"><label for="res-time">Time</label>
+              <select id="res-time" required><option value="" disabled selected>Select time</option><option>12:00 PM</option><option>12:30 PM</option><option>1:00 PM</option><option>1:30 PM</option><option>6:00 PM</option><option>6:30 PM</option><option>7:00 PM</option><option>7:30 PM</option><option>8:00 PM</option><option>8:30 PM</option><option>9:00 PM</option></select>
+            </div>
+          </div>
+          <div class="form-group"><label for="res-guests">Number of Guests</label>
+            <select id="res-guests" required><option value="" disabled selected>Select guests</option><option>1 Guest</option><option>2 Guests</option><option>3 Guests</option><option>4 Guests</option><option>5 Guests</option><option>6 Guests</option><option>7-10 Guests (Private Room)</option></select>
+          </div>
+          <div class="form-group"><label for="res-occasion">Special Occasion (Optional)</label>
+            <select id="res-occasion"><option value="" selected>None</option><option>Birthday</option><option>Anniversary</option><option>Business Dinner</option><option>Proposal</option><option>Other</option></select>
+          </div>
+          <div class="form-group"><label for="res-notes">Additional Notes</label><textarea id="res-notes" rows="3" placeholder="Dietary requirements, allergies, seating preferences..."></textarea></div>
+          <button type="submit" class="btn btn-primary btn-full">Confirm Reservation</button>
+        </form>
+        <div class="res-success" id="res-success" style="display:none;">
+          <div class="success-icon">OK</div>
+          <h3>Reservation Confirmed!</h3>
+          <p>Thank you! We will send a confirmation to your email shortly. We look forward to welcoming you.</p>
+          <button class="btn btn-secondary mt-md" onclick="resetForm()">Make Another Booking</button>
+        </div>
+      </div>
+      <div class="res-info-col">
+        <div class="res-info-card">
+          <h3>Opening Hours</h3>
+          <ul class="hours-list">
+            <li><span>Monday</span><span>Closed</span></li>
+            <li><span>Tuesday - Friday</span><span>12pm - 10pm</span></li>
+            <li><span>Saturday</span><span>12pm - 10pm</span></li>
+            <li><span>Sunday</span><span>12pm - 5pm</span></li>
+          </ul>
+        </div>
+        <div class="res-info-card">
+          <h3>Reservation Policy</h3>
+          <ul class="policy-list">
+            <li>Reservations held for 15 minutes</li>
+            <li>Cancellations accepted 24h in advance</li>
+            <li>Groups of 7+ require a deposit</li>
+            <li>Children welcome until 8pm</li>
+          </ul>
+        </div>
+        <div class="res-info-card">
+          <h3>Private Dining</h3>
+          <p>Planning a special event? Our private dining room seats up to 20 guests with a bespoke menu. <a href="#" onclick="showPage('contact'); return false;">Contact us</a> for enquiries.</p>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- GALLERY PAGE -->
+  <main id="page-gallery" class="page">
+    <div class="page-hero-simple">
+      <span class="section-tag">Visuals</span>
+      <h1>Gallery</h1>
+      <p>A glimpse into our world.</p>
+    </div>
+    <div class="container">
+      <div class="gallery-grid">
+        <div class="gallery-item gallery-item--wide"><img src="restaurant_hero.jpg" alt="Lumiere dining room" /><div class="gallery-caption">The Dining Room</div></div>
+        <div class="gallery-item"><img src="dish_1.jpg" alt="Truffle Tagliolini" /><div class="gallery-caption">Truffle Tagliolini</div></div>
+        <div class="gallery-item"><img src="dish_2.jpg" alt="Pan-Seared Salmon" /><div class="gallery-caption">Pan-Seared Salmon</div></div>
+        <div class="gallery-item"><img src="menu_spread.jpg" alt="Our seasonal spread" /><div class="gallery-caption">Seasonal Spread</div></div>
+        <div class="gallery-item"><img src="dish_3.jpg" alt="Chocolate Fondant" /><div class="gallery-caption">Chocolate Fondant</div></div>
+        <div class="gallery-item"><img src="chef.jpg" alt="Head Chef Sarah Jenkins" /><div class="gallery-caption">Chef Sarah Jenkins</div></div>
+      </div>
+    </div>
+  </main>
+
+  <!-- CONTACT PAGE -->
+  <main id="page-contact" class="page">
+    <div class="page-hero-simple">
+      <span class="section-tag">Reach Us</span>
+      <h1>Contact</h1>
+      <p>We are always happy to hear from you.</p>
+    </div>
+    <div class="container contact-grid">
+      <div class="contact-info">
+        <div class="contact-block"><h3>Address</h3><p>14 Rue de la Lumiere<br/>Mayfair, London W1K 4RB<br/>United Kingdom</p></div>
+        <div class="contact-block"><h3>Phone</h3><p><a href="tel:+442071234567">+44 (0)207 123 4567</a></p></div>
+        <div class="contact-block"><h3>Email</h3><p><a href="mailto:hello@lumiere-restaurant.com">hello@lumiere-restaurant.com</a></p></div>
+        <div class="contact-block"><h3>Follow Us</h3><div class="social-links"><a href="#" class="social-link">Instagram</a><a href="#" class="social-link">Facebook</a><a href="#" class="social-link">Twitter</a></div></div>
+      </div>
+      <div class="contact-form-col">
+        <h3>Send a Message</h3>
+        <form class="contact-form" id="contact-form" onsubmit="submitContact(event)">
+          <div class="form-group"><label for="c-name">Your Name</label><input type="text" id="c-name" placeholder="Your full name" required /></div>
+          <div class="form-group"><label for="c-email">Email</label><input type="email" id="c-email" placeholder="your@email.com" required /></div>
+          <div class="form-group"><label for="c-subject">Subject</label><input type="text" id="c-subject" placeholder="How can we help?" required /></div>
+          <div class="form-group"><label for="c-msg">Message</label><textarea id="c-msg" rows="4" placeholder="Your message..." required></textarea></div>
+          <button type="submit" class="btn btn-primary btn-full">Send Message</button>
+        </form>
+        <div class="contact-success" id="contact-success" style="display:none;">
+          <div class="success-icon">OK</div>
+          <h3>Message Sent!</h3>
+          <p>Thank you for reaching out. We will get back to you within 24 hours.</p>
+        </div>
+      </div>
+    </div>
+    <div class="map-section">
+      <div class="map-placeholder">
+        <div class="map-pin">Location</div>
+        <p>14 Rue de la Lumiere, Mayfair, London</p>
+        <a href="https://maps.google.com" target="_blank" class="btn btn-outline btn-sm">Open in Google Maps</a>
+      </div>
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer-inner">
+      <div class="footer-brand">
+        <span class="footer-logo">Lumiere</span>
+        <p>Fine dining in the heart of Mayfair. Where simplicity meets excellence.</p>
+      </div>
+      <div class="footer-links">
+        <h4>Navigation</h4>
+        <ul>
+          <li><a href="#" onclick="showPage('home'); return false;">Home</a></li>
+          <li><a href="#" onclick="showPage('menu'); return false;">Menu</a></li>
+          <li><a href="#" onclick="showPage('about'); return false;">About</a></li>
+          <li><a href="#" onclick="showPage('reservations'); return false;">Reservations</a></li>
+          <li><a href="#" onclick="showPage('contact'); return false;">Contact</a></li>
+        </ul>
+      </div>
+      <div class="footer-links">
+        <h4>Hours</h4>
+        <ul class="hours-simple">
+          <li>Tue-Fri: 12pm-10pm</li>
+          <li>Saturday: 12pm-10pm</li>
+          <li>Sunday: 12pm-5pm</li>
+          <li>Monday: Closed</li>
+        </ul>
+      </div>
+      <div class="footer-links">
+        <h4>Contact</h4>
+        <ul>
+          <li><a href="tel:+442071234567">+44 (0)207 123 4567</a></li>
+          <li><a href="mailto:hello@lumiere-restaurant.com">hello@lumiere-restaurant.com</a></li>
+          <li>14 Rue de la Lumiere, Mayfair</li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>2026 Lumiere Restaurant. All rights reserved.</p>
+      <div class="footer-bottom-links"><a href="#">Privacy Policy</a><a href="#">Terms</a></div>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
