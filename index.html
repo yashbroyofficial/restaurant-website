@@ -24,7 +24,35 @@
         <li><a href="#" class="nav-link" data-page="reservations" onclick="showPage('reservations'); return false;">Reservations</a></li>
         <li><a href="#" class="nav-link" data-page="gallery" onclick="showPage('gallery'); return false;">Gallery</a></li>
         <li><a href="#" class="nav-link" data-page="contact" onclick="showPage('contact'); return false;">Contact</a></li>
+        <li class="nav-mobile-auth">
+          <button class="nav-mobile-auth-btn" id="mobile-auth-btn" onclick="openAuthModal('signin')">Sign In</button>
+        </li>
       </ul>
+      <div class="nav-auth-wrapper">
+        <button class="nav-auth-btn" id="nav-auth-login-btn" onclick="openAuthModal('signin')">Sign In</button>
+        <div class="user-chip-container" id="user-chip-container" style="display: none;">
+          <button class="user-chip-btn" id="user-chip-btn" onclick="toggleUserDropdown(event)" aria-expanded="false" aria-haspopup="true">
+            <span class="user-avatar-initial" id="user-avatar-initial">G</span>
+            <span class="user-chip-name" id="user-chip-name">Guest</span>
+            <svg class="chevron-icon" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+          </button>
+          <div class="user-dropdown-menu" id="user-dropdown-menu">
+            <div class="user-dropdown-header">
+              <span class="user-dropdown-badge">Lumiere Guest</span>
+              <p class="user-dropdown-email" id="user-dropdown-email"></p>
+            </div>
+            <div class="user-dropdown-divider"></div>
+            <button type="button" class="user-dropdown-item" onclick="quickFillReservation()">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+              Quick Book Table
+            </button>
+            <button type="button" class="user-dropdown-item user-dropdown-logout" onclick="handleSignOut()">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+              Sign Out
+            </button>
+          </div>
+        </div>
+      </div>
     </div>
   </nav>
 
@@ -434,6 +462,100 @@
       <div class="footer-bottom-links"><a href="#">Privacy Policy</a><a href="#">Terms</a></div>
     </div>
   </footer>
+
+  <!-- AUTH MODAL -->
+  <div class="auth-modal-overlay" id="auth-modal" style="display: none;" onclick="handleOverlayClick(event)">
+    <div class="auth-modal-card" role="dialog" aria-modal="true" aria-labelledby="auth-modal-title">
+      <button class="auth-modal-close" onclick="closeAuthModal()" aria-label="Close dialog">&times;</button>
+      
+      <div class="auth-header">
+        <span class="auth-badge">Lumiere Guest Club</span>
+        <h2 id="auth-modal-title" class="auth-title">Welcome to Lumiere</h2>
+        <p class="auth-subtitle" id="auth-modal-subtitle">Sign in to manage your fine dining reservations and preferences.</p>
+      </div>
+
+      <!-- Auth Tabs -->
+      <div class="auth-tabs" id="auth-tabs">
+        <button type="button" class="auth-tab-btn active" id="tab-btn-signin" onclick="switchAuthTab('signin')">Sign In</button>
+        <button type="button" class="auth-tab-btn" id="tab-btn-signup" onclick="switchAuthTab('signup')">Create Account</button>
+        <button type="button" class="auth-tab-btn" id="tab-btn-magic" onclick="switchAuthTab('magic')">Magic Link</button>
+      </div>
+
+      <!-- Status Alert Banner -->
+      <div class="auth-alert" id="auth-alert" style="display: none;"></div>
+
+      <!-- 1. SIGN IN FORM -->
+      <form class="auth-form" id="form-signin" onsubmit="handleEmailSignIn(event)">
+        <div class="form-group">
+          <label for="signin-email">Email Address</label>
+          <input type="email" id="signin-email" placeholder="you@example.com" required autocomplete="email" />
+        </div>
+        <div class="form-group">
+          <div class="form-label-row">
+            <label for="signin-password">Password</label>
+            <a href="#" class="auth-forgot-link" onclick="switchAuthTab('forgot'); return false;">Forgot password?</a>
+          </div>
+          <input type="password" id="signin-password" placeholder="••••••••" required autocomplete="current-password" />
+        </div>
+        <button type="submit" class="btn btn-primary btn-full mt-md" id="btn-submit-signin">Sign In</button>
+      </form>
+
+      <!-- 2. CREATE ACCOUNT FORM -->
+      <form class="auth-form" id="form-signup" style="display: none;" onsubmit="handleEmailSignUp(event)">
+        <div class="form-group">
+          <label for="signup-name">Full Name</label>
+          <input type="text" id="signup-name" placeholder="Eleanor Vance" required autocomplete="name" />
+        </div>
+        <div class="form-group">
+          <label for="signup-email">Email Address</label>
+          <input type="email" id="signup-email" placeholder="you@example.com" required autocomplete="email" />
+        </div>
+        <div class="form-group">
+          <label for="signup-password">Password (min 6 characters)</label>
+          <input type="password" id="signup-password" placeholder="Choose a secure password" minlength="6" required autocomplete="new-password" />
+        </div>
+        <button type="submit" class="btn btn-primary btn-full mt-md" id="btn-submit-signup">Create Account</button>
+      </form>
+
+      <!-- 3. MAGIC LINK FORM -->
+      <form class="auth-form" id="form-magic" style="display: none;" onsubmit="handleMagicLinkSignIn(event)">
+        <p class="auth-form-description">Receive an instant, secure one-click sign-in link delivered straight to your inbox. No password required.</p>
+        <div class="form-group">
+          <label for="magic-email">Email Address</label>
+          <input type="email" id="magic-email" placeholder="you@example.com" required autocomplete="email" />
+        </div>
+        <button type="submit" class="btn btn-primary btn-full mt-md" id="btn-submit-magic">Send Magic Link</button>
+      </form>
+
+      <!-- 4. FORGOT PASSWORD FORM -->
+      <form class="auth-form" id="form-forgot" style="display: none;" onsubmit="handlePasswordReset(event)">
+        <p class="auth-form-description">Enter your account email address and we will send you secure password reset instructions.</p>
+        <div class="form-group">
+          <label for="forgot-email">Email Address</label>
+          <input type="email" id="forgot-email" placeholder="you@example.com" required autocomplete="email" />
+        </div>
+        <button type="submit" class="btn btn-primary btn-full mt-md" id="btn-submit-forgot">Send Reset Instructions</button>
+        <div class="text-center mt-md">
+          <a href="#" class="auth-sub-link" onclick="switchAuthTab('signin'); return false;">← Return to Sign In</a>
+        </div>
+      </form>
+
+      <div class="auth-modal-footer">
+        <span class="auth-security-note">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+          Secured with Supabase Authentication
+        </span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification -->
+  <div class="toast-notification" id="toast-notification" style="display: none;">
+    <div class="toast-content">
+      <span class="toast-icon" id="toast-icon">✓</span>
+      <span class="toast-message" id="toast-message">Notification</span>
+    </div>
+  </div>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="script.js"></script>
