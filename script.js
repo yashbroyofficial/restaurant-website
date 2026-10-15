@@ -116,8 +116,11 @@ function switchAuthTab(tab) {
   if (formMagic) formMagic.style.display = 'none';
   if (formForgot) formForgot.style.display = 'none';
 
+  var oauthContainer = document.getElementById('auth-oauth-container');
+
   if (tab === 'signin') {
     if (tabsContainer) tabsContainer.style.display = 'flex';
+    if (oauthContainer) oauthContainer.style.display = 'block';
     var tabBtn = document.getElementById('tab-btn-signin');
     if (tabBtn) tabBtn.classList.add('active');
     if (titleEl) titleEl.textContent = 'Welcome to Lumiere';
@@ -125,6 +128,7 @@ function switchAuthTab(tab) {
     if (formSignin) formSignin.style.display = 'flex';
   } else if (tab === 'signup') {
     if (tabsContainer) tabsContainer.style.display = 'flex';
+    if (oauthContainer) oauthContainer.style.display = 'block';
     var tabBtn = document.getElementById('tab-btn-signup');
     if (tabBtn) tabBtn.classList.add('active');
     if (titleEl) titleEl.textContent = 'Join Lumiere Club';
@@ -132,6 +136,7 @@ function switchAuthTab(tab) {
     if (formSignup) formSignup.style.display = 'flex';
   } else if (tab === 'magic') {
     if (tabsContainer) tabsContainer.style.display = 'flex';
+    if (oauthContainer) oauthContainer.style.display = 'block';
     var tabBtn = document.getElementById('tab-btn-magic');
     if (tabBtn) tabBtn.classList.add('active');
     if (titleEl) titleEl.textContent = 'Passwordless Sign In';
@@ -139,6 +144,7 @@ function switchAuthTab(tab) {
     if (formMagic) formMagic.style.display = 'flex';
   } else if (tab === 'forgot') {
     if (tabsContainer) tabsContainer.style.display = 'none';
+    if (oauthContainer) oauthContainer.style.display = 'none';
     if (titleEl) titleEl.textContent = 'Reset Password';
     if (subtitleEl) subtitleEl.textContent = 'Enter your email address to receive secure reset instructions.';
     if (formForgot) formForgot.style.display = 'flex';
@@ -222,14 +228,32 @@ function updateAuthState(user) {
     if (loginBtn) loginBtn.style.display = 'none';
     if (chipContainer) chipContainer.style.display = 'block';
 
-    var fullName = (user.user_metadata && user.user_metadata.full_name) ? user.user_metadata.full_name : '';
+    var fullName = (user.user_metadata && (user.user_metadata.full_name || user.user_metadata.name))
+      ? (user.user_metadata.full_name || user.user_metadata.name)
+      : '';
+    var avatarUrl = (user.user_metadata && (user.user_metadata.avatar_url || user.user_metadata.picture))
+      ? (user.user_metadata.avatar_url || user.user_metadata.picture)
+      : '';
     var displayName = fullName || user.email.split('@')[0];
     var initial = (fullName ? fullName.charAt(0) : user.email.charAt(0)).toUpperCase();
 
     var initialEl = document.getElementById('user-avatar-initial');
+    var imgEl = document.getElementById('user-avatar-img');
     var chipNameEl = document.getElementById('user-chip-name');
     var emailEl = document.getElementById('user-dropdown-email');
-    if (initialEl) initialEl.textContent = initial;
+
+    if (avatarUrl && imgEl) {
+      imgEl.src = avatarUrl;
+      imgEl.style.display = 'inline-block';
+      if (initialEl) initialEl.style.display = 'none';
+    } else {
+      if (initialEl) {
+        initialEl.textContent = initial;
+        initialEl.style.display = 'flex';
+      }
+      if (imgEl) imgEl.style.display = 'none';
+    }
+
     if (chipNameEl) chipNameEl.textContent = displayName;
     if (emailEl) emailEl.textContent = user.email;
 
@@ -242,6 +266,13 @@ function updateAuthState(user) {
   } else {
     if (loginBtn) loginBtn.style.display = 'block';
     if (chipContainer) chipContainer.style.display = 'none';
+    var initialEl = document.getElementById('user-avatar-initial');
+    var imgEl = document.getElementById('user-avatar-img');
+    if (initialEl) initialEl.style.display = 'flex';
+    if (imgEl) {
+      imgEl.style.display = 'none';
+      imgEl.src = '';
+    }
     if (mobileBtn) {
       mobileBtn.textContent = 'Sign In';
       mobileBtn.onclick = function() {
@@ -279,6 +310,37 @@ function prefillUserForms(user) {
 // =============================================
 // SUPABASE AUTHENTICATION HANDLERS
 // =============================================
+
+// Google OAuth Sign-In
+async function handleGoogleSignIn() {
+  if (!supabaseClient) {
+    showAuthAlert('Supabase authentication client is not available.', 'error');
+    return;
+  }
+  var btn = document.getElementById('btn-google-auth');
+  var btnText = document.getElementById('btn-google-text');
+  if (btn) btn.disabled = true;
+  if (btnText) btnText.textContent = 'Redirecting to Google...';
+
+  try {
+    var { data, error } = await supabaseClient.auth.signInWithOAuth({
+      provider: 'google',
+      options: {
+        redirectTo: window.location.origin + window.location.pathname
+      }
+    });
+
+    if (error) {
+      showAuthAlert(error.message, 'error');
+      if (btn) btn.disabled = false;
+      if (btnText) btnText.textContent = 'Continue with Google';
+    }
+  } catch (err) {
+    showAuthAlert(err.message || 'Error connecting to Google.', 'error');
+    if (btn) btn.disabled = false;
+    if (btnText) btnText.textContent = 'Continue with Google';
+  }
+}
 
 async function handleEmailSignIn(e) {
   e.preventDefault();
