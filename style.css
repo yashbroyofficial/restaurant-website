@@ -638,11 +638,25 @@ p { color: var(--stone); }
 /* =============================================
    AUTH MODAL & TOAST
 ============================================= */
+body.auth-locked {
+  overflow: hidden !important;
+}
+
+body.auth-locked #navbar,
+body.auth-locked main,
+body.auth-locked footer {
+  filter: blur(10px) brightness(0.65);
+  pointer-events: none;
+  user-select: none;
+  transition: filter 0.4s ease, opacity 0.4s ease;
+}
+
 .auth-modal-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(30, 26, 24, 0.65);
-  backdrop-filter: blur(6px);
+  background: rgba(18, 15, 14, 0.78);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
   z-index: 2000;
   display: flex;
   align-items: center;
@@ -656,11 +670,54 @@ p { color: var(--stone); }
   background: var(--warm-white);
   border: 1px solid var(--sand);
   border-radius: var(--radius-md);
-  box-shadow: var(--shadow-lg);
+  box-shadow: 0 20px 48px rgba(0, 0, 0, 0.35);
   max-width: 440px;
   width: 100%;
-  padding: 40px 36px 32px;
+  padding: 38px 36px 32px;
   animation: modalScale 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.auth-modal-card.is-mandatory .auth-modal-close {
+  display: none !important;
+}
+
+.auth-modal-card.shake {
+  animation: modalShake 0.45s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+}
+
+@keyframes modalShake {
+  0%, 100% { transform: translateX(0); }
+  20%, 60% { transform: translateX(-8px); }
+  40%, 80% { transform: translateX(8px); }
+}
+
+.auth-lock-badge {
+  width: 48px;
+  height: 48px;
+  margin: 0 auto 12px;
+  border-radius: 50%;
+  background: rgba(184, 150, 106, 0.14);
+  border: 1.5px solid rgba(184, 150, 106, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--accent);
+}
+
+.auth-mandatory-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(184, 150, 106, 0.12);
+  color: var(--accent);
+  border: 1px solid rgba(184, 150, 106, 0.3);
+  padding: 5px 12px;
+  border-radius: 100px;
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-weight: 600;
+  margin-bottom: 12px;
 }
 
 @keyframes modalScale {
@@ -745,23 +802,35 @@ p { color: var(--stone); }
   align-items: center;
   justify-content: center;
   gap: 12px;
-  padding: 11px 18px;
+  padding: 12px 18px;
   background: var(--warm-white);
   border: 1.5px solid var(--sand-dark);
   border-radius: var(--radius);
   font-family: var(--font-sans);
-  font-size: 13px;
+  font-size: 13.5px;
   font-weight: 500;
   color: var(--ink);
   transition: all var(--transition);
   cursor: pointer;
   box-shadow: 0 1px 4px rgba(0,0,0,0.04);
 }
+.btn-google-auth.btn-google-primary {
+  padding: 14px 20px;
+  font-size: 14px;
+  font-weight: 600;
+  background: #ffffff;
+  border: 1.5px solid var(--accent);
+  box-shadow: 0 4px 16px rgba(184, 150, 106, 0.16);
+}
 .btn-google-auth:hover {
   background: var(--cream);
   border-color: var(--taupe);
-  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
   transform: translateY(-1px);
+}
+.btn-google-auth.btn-google-primary:hover {
+  border-color: var(--accent-hover);
+  box-shadow: 0 6px 20px rgba(184, 150, 106, 0.28);
 }
 .btn-google-auth:disabled {
   opacity: 0.65;
@@ -770,6 +839,29 @@ p { color: var(--stone); }
 }
 .google-icon {
   flex-shrink: 0;
+}
+.btn-demo-auth {
+  width: 100%;
+  margin-top: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 8px 14px;
+  background: var(--cream);
+  border: 1px dashed var(--taupe);
+  border-radius: var(--radius);
+  font-family: var(--font-sans);
+  font-size: 11.5px;
+  font-weight: 500;
+  color: var(--stone);
+  cursor: pointer;
+  transition: all var(--transition);
+}
+.btn-demo-auth:hover {
+  background: var(--sand);
+  color: var(--ink);
+  border-color: var(--accent);
 }
 .auth-divider {
   display: flex;

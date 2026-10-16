@@ -2,8 +2,16 @@
 // LUMIERE RESTAURANT - script.js
 // =============================================
 
+// Compulsory Authentication Mode
+var isAuthCompulsory = true;
+
 // --- Page Navigation ---
 function showPage(pageId) {
+  if (isAuthCompulsory && !currentUser) {
+    shakeAuthModal();
+    openAuthModal('signin');
+    return;
+  }
   // Hide all pages
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   // Show target page
@@ -63,33 +71,66 @@ var currentUser = null;
 // AUTHENTICATION MODAL & UI LOGIC
 // =============================================
 
+function shakeAuthModal() {
+  var card = document.getElementById('auth-modal-card');
+  if (card) {
+    card.classList.remove('shake');
+    void card.offsetWidth; // force DOM reflow
+    card.classList.add('shake');
+  }
+}
+
 function openAuthModal(tab) {
   var modal = document.getElementById('auth-modal');
+  var card = document.getElementById('auth-modal-card');
   if (modal) {
     modal.style.display = 'flex';
-    document.body.style.overflow = 'hidden';
+    document.body.classList.add('auth-locked');
+    if (card) {
+      if (isAuthCompulsory && !currentUser) {
+        card.classList.add('is-mandatory');
+      } else {
+        card.classList.remove('is-mandatory');
+      }
+    }
     switchAuthTab(tab || 'signin');
   }
 }
 
-function closeAuthModal() {
+function closeAuthModal(force) {
+  if (isAuthCompulsory && !currentUser && !force) {
+    shakeAuthModal();
+    showAuthAlert('Google Sign-In is required to enter Lumiere.', 'error');
+    return;
+  }
   var modal = document.getElementById('auth-modal');
+  var card = document.getElementById('auth-modal-card');
   if (modal) {
     modal.style.display = 'none';
-    document.body.style.overflow = '';
+    if (card) card.classList.remove('is-mandatory');
+    document.body.classList.remove('auth-locked');
     clearAuthAlert();
   }
 }
 
 function handleOverlayClick(e) {
   if (e.target && e.target.id === 'auth-modal') {
+    if (isAuthCompulsory && !currentUser) {
+      shakeAuthModal();
+      showAuthAlert('Google Sign-In is required to access the website.', 'error');
+      return;
+    }
     closeAuthModal();
   }
 }
 
-// Close on Escape key
+// Close on Escape key (blocked when compulsory and unauthenticated)
 document.addEventListener('keydown', function(e) {
   if (e.key === 'Escape') {
+    if (isAuthCompulsory && !currentUser) {
+      shakeAuthModal();
+      return;
+    }
     closeAuthModal();
     closeUserDropdown();
   }
@@ -262,6 +303,8 @@ function updateAuthState(user) {
       mobileBtn.onclick = handleSignOut;
     }
 
+    // Unlock site
+    closeAuthModal(true);
     prefillUserForms(user);
   } else {
     if (loginBtn) loginBtn.style.display = 'block';
@@ -279,6 +322,11 @@ function updateAuthState(user) {
         document.getElementById('nav-menu').classList.remove('open');
         openAuthModal('signin');
       };
+    }
+
+    // If login is compulsory, lock site immediately
+    if (isAuthCompulsory) {
+      openAuthModal('signin');
     }
   }
 }
@@ -311,6 +359,22 @@ function prefillUserForms(user) {
 // SUPABASE AUTHENTICATION HANDLERS
 // =============================================
 
+// Demo Google Sign-In (Allows immediate testing without Supabase OAuth key setup)
+function handleDemoGoogleSignIn() {
+  var mockGoogleUser = {
+    id: 'demo-google-user',
+    email: 'alexander.wright@gmail.com',
+    user_metadata: {
+      full_name: 'Alexander Wright',
+      name: 'Alexander Wright',
+      avatar_url: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=150&q=80'
+    }
+  };
+  localStorage.setItem('lumiere_demo_user', JSON.stringify(mockGoogleUser));
+  updateAuthState(mockGoogleUser);
+  showToast('Signed in with Google (Alexander Wright)', '✓');
+}
+
 // Google OAuth Sign-In
 async function handleGoogleSignIn() {
   if (!supabaseClient) {
@@ -320,7 +384,7 @@ async function handleGoogleSignIn() {
   var btn = document.getElementById('btn-google-auth');
   var btnText = document.getElementById('btn-google-text');
   if (btn) btn.disabled = true;
-  if (btnText) btnText.textContent = 'Redirecting to Google...';
+  if (btnText) btnText.textContent = 'Connecting to Google...';
 
   try {
     var { data, error } = await supabaseClient.auth.signInWithOAuth({
@@ -331,14 +395,18 @@ async function handleGoogleSignIn() {
     });
 
     if (error) {
-      showAuthAlert(error.message, 'error');
+      if (error.message && error.message.toLowerCase().includes('not enabled')) {
+        showAuthAlert('Google provider is not enabled in your Supabase project yet. You can use the "Quick Test: Sign In as Demo Google User" button below, or enable Google OAuth in the Supabase Dashboard.', 'error');
+      } else {
+        showAuthAlert(error.message, 'error');
+      }
       if (btn) btn.disabled = false;
-      if (btnText) btnText.textContent = 'Continue with Google';
+      if (btnText) btnText.textContent = 'Sign In with Google to Enter';
     }
   } catch (err) {
     showAuthAlert(err.message || 'Error connecting to Google.', 'error');
     if (btn) btn.disabled = false;
-    if (btnText) btnText.textContent = 'Continue with Google';
+    if (btnText) btnText.textContent = 'Sign In with Google to Enter';
   }
 }
 
@@ -507,20 +575,27 @@ async function handlePasswordReset(e) {
 
 async function handleSignOut() {
   closeUserDropdown();
+  localStorage.removeItem('lumiere_demo_user');
   if (supabaseClient) {
     try {
       await supabaseClient.auth.signOut();
-      updateAuthState(null);
-      showToast('You have been signed out.', '✓');
     } catch (err) {
       console.error('Sign out error:', err);
     }
   }
+  updateAuthState(null);
+  showToast('You have been signed out. Please sign in to re-enter.', '✓');
 }
 
 // --- Reservation Form ---
 async function submitReservation(e) {
   e.preventDefault();
+  if (isAuthCompulsory && !currentUser) {
+    shakeAuthModal();
+    openAuthModal('signin');
+    showAuthAlert('Please sign in with Google to confirm your reservation.', 'error');
+    return;
+  }
   var btn = document.querySelector('#reservation-form button[type="submit"]');
   if (btn) {
     btn.textContent = 'Confirming...';
@@ -582,6 +657,12 @@ function resetForm() {
 // --- Contact Form ---
 async function submitContact(e) {
   e.preventDefault();
+  if (isAuthCompulsory && !currentUser) {
+    shakeAuthModal();
+    openAuthModal('signin');
+    showAuthAlert('Please sign in with Google to send a message.', 'error');
+    return;
+  }
   var btn = document.querySelector('#contact-form button[type="submit"]');
   if (btn) {
     btn.textContent = 'Sending...';
@@ -627,18 +708,45 @@ window.addEventListener('DOMContentLoaded', function() {
     dateInput.min = yyyy + '-' + mm + '-' + dd;
   }
 
+  // Check for active demo user session
+  var savedDemo = localStorage.getItem('lumiere_demo_user');
+  if (savedDemo) {
+    try {
+      var parsedDemo = JSON.parse(savedDemo);
+      updateAuthState(parsedDemo);
+      return;
+    } catch(e) {}
+  }
+
+  // Ensure compulsory lock is active before checking session
+  if (isAuthCompulsory && !currentUser) {
+    document.body.classList.add('auth-locked');
+    var modal = document.getElementById('auth-modal');
+    if (modal) modal.style.display = 'flex';
+  }
+
   // Supabase Auth listener & session restore
   if (supabaseClient) {
     supabaseClient.auth.onAuthStateChange(function(event, session) {
-      updateAuthState(session ? session.user : null);
+      if (!localStorage.getItem('lumiere_demo_user')) {
+        updateAuthState(session ? session.user : null);
+      }
     });
 
     supabaseClient.auth.getSession().then(function(res) {
+      if (localStorage.getItem('lumiere_demo_user')) return;
       if (res && res.data && res.data.session) {
         updateAuthState(res.data.session.user);
+      } else {
+        updateAuthState(null);
       }
     }).catch(function(err) {
       console.warn('Session check failed:', err);
+      if (!localStorage.getItem('lumiere_demo_user')) {
+        updateAuthState(null);
+      }
     });
+  } else {
+    updateAuthState(null);
   }
 });
